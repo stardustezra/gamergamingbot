@@ -7,7 +7,9 @@ with open('config.json') as config_file:
     config = json.load(config_file)
     TOKEN = config['token']
 
-intents = discord.Intents.default()
+# Define intents and enable required intents
+intents = discord.Intents.all()
+intents.message_content = True #THIS IS WHAT YOU WANT
 intents.typing = False
 intents.presences = False
 
