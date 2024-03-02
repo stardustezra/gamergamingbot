@@ -9,7 +9,7 @@ class Reminders(commands.Cog):
         self.last_session_times = []
 
     @commands.command()
-    async def remind(self, ctx, time_str, *, message):
+    async def remind(self, ctx, time_str: str, *, message: str):
         try:
             # Parse the time string to get the reminder time
             reminder_time = datetime.datetime.strptime(time_str, "%d-%m-%Y %H:%M")
@@ -44,7 +44,7 @@ class Reminders(commands.Cog):
     @commands.command()
     async def lastsession(self, ctx):
         if self.last_session_times:
-            last_sessions_str = '\n'.join(str(time) for time in self.last_session_times)
+            last_sessions_str = '\n'.join(map(str, self.last_session_times[-2:]))
             await ctx.send(f"The last 2 session times were:\n{last_sessions_str}")
         else:
             await ctx.send("No session times recorded.")
