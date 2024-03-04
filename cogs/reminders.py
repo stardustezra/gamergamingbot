@@ -1,56 +1,22 @@
-import discord
-from discord.ext import commands
-import datetime
 import asyncio
 
-# Add import statement for reminders.py
-from reminders import Reminders
+class ReminderManager:
+    def __init__(self):
+        self.reminders = {}
 
-class Reminders(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-        self.last_session_times = []
+    async def create_reminder(self, user_id, time, message):
+        if user_id not in self.reminders:
+            self.reminders[user_id] = []
 
-    @commands.command()
-    async def remind(self, ctx, time_str: str, *, message: str):
-        try:
-            # Parse the time string to get the reminder time
-            reminder_time = datetime.datetime.strptime(time_str, "%d-%m-%Y %H:%M")
-        except ValueError:
-            await ctx.send("Invalid time format. Please use DD-MM-YYYY HH:MM.")
-            return
+        reminder_time = int(time)
+        self.reminders[user_id].append((reminder_time, message))
+        await asyncio.sleep(reminder_time)
+        await self.send_reminder(user_id, message)
 
-        # Calculate the time difference until the reminder
-        delta = (reminder_time - datetime.datetime.now()).total_seconds()
+    async def send_reminder(self, user_id, message):
+        # You would typically use the discord.py API to send a reminder message here
+        # Example: await user.send(f"Reminder: {message}")
+        print(f"Reminder for user {user_id}: {message}")
 
-        if delta <= 0:
-            await ctx.send("Reminder time should be in the future.")
-            return
-
-        # Schedule the reminder task
-        await self.schedule_reminder(ctx, delta, message)
-
-    async def schedule_reminder(self, ctx, delta, message):
-        # Wait for the specified time
-        await asyncio.sleep(delta)
-
-        # Send the reminder message
-        await ctx.send(f"Reminder: {message}")
-
-    @remind.error
-    async def remind_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Please provide both a time and a message for the reminder.")
-        elif isinstance(error, commands.BadArgument):
-            await ctx.send("Invalid argument provided. Please use the correct time format (DD-MM-YYYY HH:MM).")
-
-    @commands.command()
-    async def lastsession(self, ctx):
-        if self.last_session_times:
-            last_sessions_str = '\n'.join(map(str, self.last_session_times[-2:]))
-            await ctx.send(f"The last 2 session times were:\n{last_sessions_str}")
-        else:
-            await ctx.send("No session times recorded.")
-
-def setup(bot):
-    bot.add_cog(Reminders(bot))
+    def get_reminders(self, user_id):
+        return [reminder[1] for reminder in self.reminders.get(user_id, [])]
