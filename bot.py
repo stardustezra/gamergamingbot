@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import json
-from reminders import ReminderManager
+from cogs.reminders import ReminderManager
 from datetime import datetime
 
 # Load token from config file
