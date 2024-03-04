@@ -3,6 +3,9 @@ from discord.ext import commands
 import datetime
 import asyncio
 
+# Add import statement for reminders.py
+from reminders import Reminders
+
 class Reminders(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -48,8 +51,6 @@ class Reminders(commands.Cog):
             await ctx.send(f"The last 2 session times were:\n{last_sessions_str}")
         else:
             await ctx.send("No session times recorded.")
-
-    # Add more reminder-related commands as needed
 
 def setup(bot):
     bot.add_cog(Reminders(bot))

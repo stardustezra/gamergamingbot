@@ -9,7 +9,7 @@ with open('config.json') as config_file:
 
 # Define intents and enable required intents
 intents = discord.Intents.all()
-intents.message_content = True #THIS IS WHAT YOU WANT
+intents.message_content = True #THIS IS IMPORTANT
 intents.typing = False
 intents.presences = False
 
