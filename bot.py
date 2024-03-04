@@ -9,23 +9,22 @@ with open('config.json') as config_file:
 
 # Define intents and enable required intents
 intents = discord.Intents.all()
-intents.message_content = True #THIS IS IMPORTANT
+intents.message_content = True  # THIS IS IMPORTANT
 intents.typing = False
 intents.presences = False
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
+# Import the reminders cog from the cogs folder
+from cogs import reminders
+
 # Load the reminders cog
-bot.load_extension('reminders')
+bot.add_cog(reminders.Reminders(bot))
 
 # Event: Bot is ready
 @bot.event
 async def on_ready():
     print('Logged in as {0.user}'.format(bot))
 
-# Add more general bot functionality as needed
-
-
 # Run the bot with its token
 bot.run(TOKEN)
-
