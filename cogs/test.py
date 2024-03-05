@@ -9,12 +9,13 @@ class Reminder(commands.Cog):
     
     @commands.command()
     async def remind(self, ctx, date: str, time: str, *, reminder_text: str):
+        print(date)
         try:
             # Parse the provided date and time into a datetime object
-            reminder_datetime = datetime.strptime(f"{date} {time}", "%d %m %Y %H:%M")
+            reminder_datetime = datetime.strptime(f"{date} {time}", "%d%m%Y %H:%M")
         except ValueError:
             # If the format is invalid, send an error message
-            await ctx.send("Invalid date/time format. Please use DD MM YYYY HH:MM format.")
+            await ctx.send("Invalid date/time format. Please use DDMMYYYY HH:MM format.")
             return
 
         # Get the current datetime
@@ -36,3 +37,4 @@ class Reminder(commands.Cog):
 
 async def setup(client):
     await client.add_cog(Reminder(client))
+    
